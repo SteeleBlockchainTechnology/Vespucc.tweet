@@ -1,12 +1,12 @@
 # Vespucc.tweet - Local Twitter Bot
 
-A local application that uses OpenAI to generate and post tweets to Twitter. This application runs entirely on your local machine without requiring Firebase or cloud services.
+A local application that uses Groq to generate and post tweets to Twitter. This application runs entirely on your local machine without requiring Firebase or cloud services.
 
 ## Features
 
 - Twitter OAuth 2.0 authentication
 - Local token storage using JSON files
-- AI-generated tweets using OpenAI
+- AI-generated tweets using Groq
 - Simple web interface
 
 ## Setup
@@ -18,7 +18,7 @@ A local application that uses OpenAI to generate and post tweets to Twitter. Thi
    ```
 3. Create a `.env` file based on the `.env.example` template and fill in your credentials:
    - Get Twitter API credentials from the [Twitter Developer Portal](https://developer.twitter.com/)
-   - Get OpenAI API key from [OpenAI](https://platform.openai.com/)
+   - Get Groq API key from [Groq](https://console.groq.com/)
 
 ## Usage
 
@@ -35,7 +35,7 @@ A local application that uses OpenAI to generate and post tweets to Twitter. Thi
 1. The application uses Express.js to create a local web server
 2. Authentication data is stored in a local JSON file in the `data` directory
 3. The Twitter API is used for authentication and posting tweets
-4. OpenAI's API generates tweet content
+4. Groq's API generates tweet content
 
 ## File Structure
 
@@ -47,5 +47,5 @@ A local application that uses OpenAI to generate and post tweets to Twitter. Thi
 ## Notes
 
 - This application uses the Twitter API v2
-- The OpenAI model used is text-davinci-001, but you can modify the code to use newer models
+- The Groq model used is llama3-8b-8192, but you can modify the code to use other available models
 - Make sure to keep your `.env` file secure and never commit it to version control

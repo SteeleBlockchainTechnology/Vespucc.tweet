@@ -44,13 +44,11 @@ const twitterClient = new TwitterApi({
 // Update callback URL for local development
 const callbackURL = "http://localhost:3000/callback";
 
-// OpenAI API init
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-  organization: process.env.OPENAI_ORG || "YOUR_OPENAI_ORG",
-  apiKey: process.env.OPENAI_API_KEY || "YOUR_OPENAI_SECRET",
+// Groq API init
+const Groq = require("groq-sdk");
+const groqClient = new Groq({
+  apiKey: process.env.GROQ_API_KEY || "YOUR_GROQ_API_KEY",
 });
-const openai = new OpenAIApi(configuration);
 
 // STEP 1 - Auth URL
 app.get("/auth", async (req, res) => {
@@ -122,13 +120,16 @@ app.get("/tweet", async (req, res) => {
 
     await saveTokenData({ accessToken, refreshToken: newRefreshToken });
 
-    const nextTweet = await openai.createCompletion("text-davinci-001", {
-      prompt: "tweet something cool for #techtwitter",
+    const chatCompletion = await groqClient.chat.completions.create({
+      messages: [
+        { role: "user", content: "tweet something cool for #techtwitter" },
+      ],
+      model: "llama3-8b-8192",
       max_tokens: 64,
     });
 
     const { data } = await refreshedClient.v2.tweet(
-      nextTweet.data.choices[0].text
+      chatCompletion.choices[0].message.content
     );
 
     res.send(data);
@@ -141,7 +142,7 @@ app.get("/tweet", async (req, res) => {
 // Home route
 app.get("/", (req, res) => {
   res.send(`
-    <h1>Twitter Bot with OpenAI</h1>
+    <h1>Twitter Bot with Groq</h1>
     <p>A local application for posting AI-generated tweets</p>
     <ul>
       <li><a href="/auth">Authenticate with Twitter</a></li>
